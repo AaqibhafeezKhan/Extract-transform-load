@@ -1,0 +1,21 @@
+id,name,age,city,state,total_purchases,last_purchase
+1,Ana Paula,28,São Paulo,SP,3500.25,2025-05-15
+2,Carlos Eduardo,35,Rio de Janeiro,RJ,1500.50,2025-04-10
+3,Juliana Reis,,Belo Horizonte,MG,900.0,2025-03-21
+4,Pedro Souza,42,Curitiba,PR,4800.75,2025-06-01
+5,Fernanda Lima,30,Salvador,BA,1200.20,2025-04-28
+6,Ricardo Silva,45,Porto Alegre,RS,2200.0,2025-05-01
+7,Beatriz Santos,22,Brasília,DF,3100.0,2025-05-10
+8,Marcos Oliveira,50,Recife,PE,4500.0,2025-05-20
+9,Camila Costa,33,Manaus,AM,1800.50,2025-04-15
+10,Gabriel Almeida,27,Fortaleza,CE,2500.25,2025-05-05
+11,Lucia Mendes,38,São Paulo,SP,3700.0,2025-05-08
+12,Eduardo Farias,41,Rio de Janeiro,RJ,1600.0,2025-04-20
+13,Sandra Rocha,,Belo Horizonte,MG,950.0,2025-03-25
+14,Felipe Castro,29,Curitiba,PR,4900.0,2025-06-05
+15,Isabela Lima,31,Salvador,BA,1300.0,2025-04-30
+16,Roberto Pires,46,Porto Alegre,RS,2300.0,2025-05-03
+17,Marta Souza,23,Brasília,DF,3200.0,2025-05-12
+18,Jorge Silva,51,Recife,PE,4600.0,2025-05-22
+19,Patricia Gomes,34,Manaus,AM,1900.0,2025-04-17
+20,Lucas Santos,28,Fortaleza,CE,2600.0,2025-05-07
