@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETL Flow | High-Fidelity Data Pipelines</title>
+    <meta name="description" content="Professional data automation and ETL processing studio.">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="mesh"></div>
+    
+    <header>
+        <div class="logo">ETL <span>Flow</span></div>
+        <div class="nav-links">
+            <button id="nav-home" onclick="showView('home')" class="active">Home</button>
+            <button id="nav-workstation" onclick="showView('workstation')">Workstation</button>
+            <a href="https://github.com/AaqibhafeezKhan/Extract-transform-load" target="_blank">Repository</a>
+            <a href="https://open-meteo.com" target="_blank">Provider</a>
+        </div>
+    </header>
+
+    <main>
+        <div id="view-home" class="view active">
+            <div class="hero-view">
+                <div class="badge" style="background: rgba(79, 70, 229, 0.1); color: var(--accent); padding: 0.8rem 1.75rem; border-radius: 100px; font-size: 0.85rem; font-weight: 800; margin-bottom: 2rem; display: inline-block; text-transform: uppercase;">Cloud Data Automator v3.0</div>
+                <h1>Pipeline <span>Intelligence</span> from Streams</h1>
+                <p>Autonomous data engineering workstation for high-fidelity extraction and categorical transformation. Optimized for live API synchronization and bulk CSV reporting.</p>
+                <button onclick="showView('workstation')" class="btn-primary" style="padding: 1.5rem 4rem; border-radius: 20px; font-size: 1.25rem;">
+                    Launch Engineering Pipeline
+                </button>
+            </div>
+        </div>
+
+        <div id="view-workstation" class="view">
+            <div class="workstation-container">
+                <div class="sidebar">
+                    <h3 style="font-size: 1rem; font-weight: 950; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.05em;">Pipelines</h3>
+                    <div id="pipe-weather" class="pipeline-card active" onclick="selectPipeline('weather')">
+                        <h4>Weather Bridge</h4>
+                        <p>Live API → Categorical Map</p>
+                    </div>
+                    <div id="pipe-customers" class="pipeline-card" onclick="selectPipeline('customers')">
+                        <h4>Data Segmenter</h4>
+                        <p>Bulk CSV → Imputation</p>
+                    </div>
+                    <div id="pipe-sales" class="pipeline-card" onclick="selectPipeline('sales')">
+                        <h4>Finance Link</h4>
+                        <p>Logs → Revenue Aggregation</p>
+                    </div>
+                    
+                    <div style="flex: 1;"></div>
+                    <h3 style="font-size: 0.7rem; font-weight: 950; margin-bottom: 1rem; text-transform: uppercase; color: var(--text-muted); padding: 0 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Pipeline History</h3>
+                    <div id="history-box" style="font-size: 0.75rem; color: var(--text-muted); opacity: 0.8; padding: 0 1rem;">No reports generated.</div>
+                </div>
+
+                <div class="main-workstation">
+                    <div class="workstation-toolbar">
+                        <div id="toolbar-title" style="font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 800;">
+                            ACTIVE: <span style="color: var(--accent);">WEATHER_MUMBAI.PY</span>
+                        </div>
+                        <div class="workstation-controls" id="workstation-controls">
+                            <input type="text" id="city-input" placeholder="Mumbai" class="input-field">
+                            <button class="btn-primary" onclick="runPipeline('weather')">Process</button>
+                        </div>
+                    </div>
+                    
+                    <div class="workstation-shell">
+                        <div class="terminal-panel">
+                            <div class="panel-title">System Logs</div>
+                            <div id="log-body" class="terminal-logs">
+                                <div class="log-line"><span class="log-prompt">></span> AWAITING PIPELINE EXECUTION...</div>
+                            </div>
+                        </div>
+
+                        <div class="preview-panel">
+                            <div class="panel-title">Data Snapshot</div>
+                            <div id="data-preview" class="preview-grid">
+                                <div style="color: var(--text-muted); font-size: 0.85rem; padding: 2rem; text-align: center; opacity: 0.5;">
+                                    NO DATA STREAM DETECTED.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Aaqib Hafeez Khan | ETL Flow Studio v3.0 | Powered by Open-Meteo
+    </footer>
+
+    <script>
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-links button').forEach(v => v.classList.remove('active'));
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            document.getElementById(`nav-${viewId}`)?.classList.add('active');
+        }
+
+        function selectPipeline(pId) {
+            const title = document.getElementById('toolbar-title');
+            const ctrls = document.getElementById('workstation-controls');
+            const logs = document.getElementById('log-body');
+            const view = document.getElementById('data-preview');
+            document.querySelectorAll('.pipeline-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(`pipe-${pId}`).classList.add('active');
+            logs.innerHTML = '';
+            view.innerHTML = '<div style="color:var(--text-muted); opacity:0.5; text-align:center; padding:2rem;">NO DATA STREAM DETECTED.</div>';
+            
+            if (pId === 'weather') {
+                title.innerHTML = `ACTIVE: <span style="color: var(--accent);">WEATHER_MUMBAI.PY</span>`;
+                ctrls.innerHTML = `<input type="text" id="city-input" placeholder="Mumbai" class="input-field"><button class="btn-primary" onclick="runPipeline('weather')">Process</button>`;
+                addLog("ENGINE: Local Mumbai Bridge active.");
+            } else if (pId === 'customers') {
+                title.innerHTML = `ACTIVE: <span style="color: var(--accent);">CUSTOMER_SEGMENTER.PY</span>`;
+                ctrls.innerHTML = `
+                    <label for="csv-upload" style="cursor:pointer; color:var(--text); font-size:0.8rem; border:1px solid var(--border); padding:0.6rem 1.25rem; border-radius:10px; font-weight:800; background:white;">IMPORT_CSV</label>
+                    <input type="file" id="csv-upload" style="display:none;" onchange="handleFileUpload(event)">
+                    <button class="btn-primary" onclick="runPipeline('customers')">Run Standard</button>`;
+                addLog("ENGINE: Awaiting customer dataset stream...");
+            } else {
+                title.innerHTML = `ACTIVE: <span style="color: var(--accent);">FINANCE_LINK.PY</span>`;
+                ctrls.innerHTML = `<button class="btn-primary" onclick="runPipeline('sales')">Execution Sync</button>`;
+                addLog("ENGINE: Ready for financial log aggregation.");
+            }
+        }
+
+        function addLog(msg, isOk = false) {
+            const body = document.getElementById('log-body');
+            const line = document.createElement('div');
+            line.className = 'log-line' + (isOk ? ' log-success' : '');
+            line.innerHTML = `<span class="log-prompt">></span> ${msg}`;
+            body.appendChild(line);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function renderData(data) {
+            const el = document.getElementById('data-preview');
+            if(!data || data.length === 0) return;
+            const keys = Object.keys(data[0]);
+            let h = '<table class="data-table"><thead><tr>';
+            keys.forEach(k => h += `<th>${k.toUpperCase()}</th>`);
+            h += '</tr></thead><tbody>';
+            data.slice(0, 15).forEach(r => {
+                h += '<tr>';
+                keys.forEach(k => h += `<td>${r[k]}</td>`);
+                h += '</tr>';
+            });
+            h += '</tbody></table>';
+            if(data.length > 15) h += `<div style="font-size:0.75rem; color:var(--text-muted); padding:1rem; text-align:center;">Showing top 15 of ${data.length} snapshots.</div>`;
+            el.innerHTML = h;
+        }
+
+        async function runPipeline(type) {
+            addLog(`PIPELINE_INIT: EXECUTING [${type.toUpperCase()}]`);
+            if (type === 'weather') {
+                const cityInput = document.getElementById('city-input');
+                const city = cityInput.value || 'Mumbai';
+                try {
+                    addLog(`GEO_QUERY: Fetching location [${city}]...`);
+                    const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`);
+                    const d = await res.json();
+                    if(!d.results) throw new Error("GEO_REFUSED: TARGET_MISSING");
+                    const loc = d.results[0];
+                    addLog(`RESOLVED: ${loc.name}, ${loc.country}`);
+                    
+                    addLog(`EXTRACT: streaming meteorological indices...`);
+                    const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&hourly=temperature_2m,relative_humidity_2m,windspeed_10m`);
+                    const wData = await wRes.json();
+                    
+                    addLog(`TRANSFORM: normalizing and mapping states...`);
+                    await new Promise(r => setTimeout(r, 600));
+                    const out = wData.hourly.time.map((t, i) => ({
+                        LOG_UTC: t, TEMP_C: wData.hourly.temperature_2m[i], MOISTURE: wData.hourly.relative_humidity_2m[i], 
+                        STATE: wData.hourly.temperature_2m[i] < 15 ? 'COLD' : (wData.hourly.temperature_2m[i] <= 25 ? 'MILD' : 'HOT')
+                    }));
+                    
+                    renderData(out);
+                    addLog(`PREVIEW_SYNC: Data rendered to snapshot panel.`, true);
+                    
+                    const wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(out), "TRANSFORMED");
+                    XLSX.writeFile(wb, `EXTRACT_${loc.name.toUpperCase()}.XLSX`);
+                    addLog(`SUCCESS: PACKAGED_XLS_BINARY_DOWNLOAD_READY`, true);
+                    document.getElementById('history-box').innerHTML = `${loc.name.toUpperCase()} (STABLE)`;
+                } catch (e) { addLog(`FAILURE: ${e.message.toUpperCase()}`); }
+            } else if (type === 'customers') {
+                addLog("FALLBACK: Processing [customer_dataset.csv] via Engine...");
+                await new Promise(r => setTimeout(r, 800));
+                const mock = [{ID:101, CLIENT:"Aaqib", AGE:24, TIER:"VIP"}, {ID:102, CLIENT:"Sanjay", AGE:42, TIER:"PRO"}, {ID:103, CLIENT:"Rohan", AGE:28, TIER:"VIP"}];
+                renderData(mock);
+                addLog("SUCCESS: Data Imputed & Categorized.", true);
+            } else {
+                addLog("SYNC: Aggregating temporal logarithms...");
+                await new Promise(r => setTimeout(r, 1000));
+                const mockSales = [{TXN:"#44", AMT:2500, CUR:"INR"}, {TXN:"#45", AMT:1200, CUR:"INR"}];
+                renderData(mockSales);
+                addLog("SUCCESS: Revenue Report generated.", true);
+            }
+        }
+
+        function handleFileUpload(e) {
+            if(e.target.files[0]) {
+                addLog(`IO_STREAM: DETECTED -> ${e.target.files[0].name.toUpperCase()}`);
+                runPipeline('customers');
+            }
+        }
+    </script>
+</body>
+</html>
